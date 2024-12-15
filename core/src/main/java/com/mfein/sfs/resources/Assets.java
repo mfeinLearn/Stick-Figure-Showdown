@@ -23,8 +23,8 @@ public class Assets {
     public static final String LOSE_SPRITE_SHEET = "sprites/LoseSpriteSheet.png";
 
     // Other Gameplay Assets
-    public static final String GAMEPLAY_BUTTONS_ATLAS = "textures/GameplayButtons.atlas";
-    public static final String BLOOD_ATLAS = "textures/Blood.atlas";
+//    public static final String GAMEPLAY_BUTTONS_ATLAS = "textures/GameplayButtons.atlas";
+//    public static final String BLOOD_ATLAS = "textures/Blood.atlas";
 
     // Fonts
     public static final String ROBOTO_REGULAR = "fonts/Roboto-Regular.ttf";
@@ -58,8 +58,8 @@ public class Assets {
         manager.load(BLOCK_SPRITE_SHEET, Texture.class);
         manager.load(WIN_SPRITE_SHEET, Texture.class);
         manager.load(LOSE_SPRITE_SHEET, Texture.class);
-        manager.load(GAMEPLAY_BUTTONS_ATLAS, Texture.class);
-        manager.load(BLOOD_ATLAS, Texture.class);
+//        manager.load(GAMEPLAY_BUTTONS_ATLAS, Texture.class);
+//        manager.load(BLOOD_ATLAS, Texture.class);
 
 
     }
