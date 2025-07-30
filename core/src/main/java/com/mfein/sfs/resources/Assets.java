@@ -49,6 +49,7 @@ public class Assets {
     public void load() {
         // load all assets
         loadGamePlayAssets();
+        loadFonts();
     }
 
     private void loadGamePlayAssets() {
@@ -76,6 +77,22 @@ public class Assets {
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallFont.fontFileName = ROBOTO_REGULAR;
         smallFont.fontParameters.size = 32;
+        manager.load(SMALL_FONT, BitmapFont.class, smallFont);
+
+        // load the medium font
+        FreetypeFontLoader.FreeTypeFontLoaderParameter mediumFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        mediumFont.fontFileName = ROBOTO_REGULAR;
+        mediumFont.fontParameters.size = 106;
+        mediumFont.fontParameters.borderWidth = 4;
+        manager.load(MEDIUM_FONT, BitmapFont.class, mediumFont);
+
+        // load the large font
+        FreetypeFontLoader.FreeTypeFontLoaderParameter largeFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        largeFont.fontFileName = ROBOTO_REGULAR;
+        largeFont.fontParameters.size = 150;
+        largeFont.fontParameters.borderWidth = 6;
+        manager.load(LARGE_FONT, BitmapFont.class, largeFont);
+
     }
 
     public void dispose() {
