@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mfein.sfs.SFS;
+import com.mfein.sfs.objects.Fighter;
 import com.mfein.sfs.resources.Assets;
 import com.mfein.sfs.resources.GlobalVariables;
 
@@ -33,6 +34,8 @@ public class GameScreen implements Screen, InputProcessor {
     private static final float PLAYER_START_POSITION_X = 16f;
     private static final float OPPONENT_START_POSITION_X = 51f;
     private static final float FIGHTER_START_POSITION_Y = 15f;
+    private static final float FIGHTER_CONTACT_DISTANCE_X = 7.5f;
+    private static final float FIGHTER_CONTACT_DISTANCE_Y = 1.5f;
 
 
 
@@ -62,6 +65,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
+
     }
 
     @Override
@@ -126,6 +130,24 @@ public class GameScreen implements Screen, InputProcessor {
         // keep the fighters within the bounds of the ring
         keepWithinRingBounds(game.player.getPosition());
         keepWithinRingBounds(game.opponent.getPosition());
+
+        // check if the fighters are within contact distance
+        if (areWithinContactDistance(game.player.getPosition() , game.opponent.getPosition())) {
+            if (game.player.isAttackActive()){
+                // if the fighters are within contact distance and player is actively attacking, opponent gets hit
+                game.opponent.getHit(Fighter.HIT_STRENGTH);
+//                System.out.println("opponent's life: " + game.opponent.getLife());
+
+                // deactivate player's attack
+                game.player.makeContact();
+
+                // check if opponent has lost
+                if (game.opponent.hasLost()) {
+                    // if opponent has lost, player wins
+                    game.player.win();
+                }
+            }
+        }
     }
 
     private void keepWithinRingBounds(Vector2 position ){
@@ -140,6 +162,14 @@ public class GameScreen implements Screen, InputProcessor {
             position.x = position.y / -RING_SLOPE + RING_MAX_X;
         }
     }
+
+    private boolean areWithinContactDistance( Vector2 position1, Vector2 position2 ) {
+        // determine if the positions are within the distance in which contact is possible
+        float xDistance = Math.abs(position1.x - position2.x);
+        float yDistance = Math.abs(position1.y - position2.y);
+        return xDistance <= FIGHTER_CONTACT_DISTANCE_X && yDistance <= FIGHTER_CONTACT_DISTANCE_Y;
+    }
+
 
     @Override
     public void resize(int width, int height) {
