@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.mfein.sfs.SFS;
@@ -19,6 +20,14 @@ public class GameScreen implements Screen, InputProcessor {
     // background/ring
     private Texture backgroundTexture;
     private Texture frontRopesTexture;
+
+    private static final float RING_MIN_X = 7f;
+    private static final float RING_MAX_X = 60f;
+    private static final float RING_MIN_Y = 4f;
+    private static final float RING_MAX_Y = 22f;
+    private static final float RING_SLOPE = 3.16f;
+
+
 
     // fighters
     private static final float PLAYER_START_POSITION_X = 16f;
@@ -75,16 +84,30 @@ public class GameScreen implements Screen, InputProcessor {
         // draw the fighters
         renderFighters();
 
+        // draw the front ropes
+        game.batch.draw(frontRopesTexture, 0,0, frontRopesTexture.getWidth() * GlobalVariables.WORLD_SCALE,
+            frontRopesTexture.getHeight() * GlobalVariables.WORLD_SCALE);
+
         // end drawing
         game.batch.end();
     }
 
     private void renderFighters() {
-        // draw player
-        game.player.render(game.batch);
+        // use the y coordinates of the fighters' positions to determine which fighter to draw first
+        if (game.player.getPosition().y > game.opponent.getPosition().y) {
+            // draw player
+            game.player.render(game.batch);
 
-        // draw opponent
-        game.opponent.render(game.batch);
+            // draw opponent
+            game.opponent.render(game.batch);
+        } else {
+            // draw opponent
+            game.opponent.render(game.batch);
+
+            // draw player
+            game.player.render(game.batch);
+
+        }
     }
 
     private void update(float deltaTime) {
@@ -98,6 +121,23 @@ public class GameScreen implements Screen, InputProcessor {
         } else {
             game.player.faceLeft();
             game.opponent.faceRight();
+        }
+
+        // keep the fighters within the bounds of the ring
+        keepWithinRingBounds(game.player.getPosition());
+        keepWithinRingBounds(game.opponent.getPosition());
+    }
+
+    private void keepWithinRingBounds(Vector2 position ){
+        if (position.y < RING_MIN_Y) {
+            position.y = RING_MIN_Y;
+        } else if (position.y > RING_MAX_Y) {
+            position.y = RING_MAX_Y;
+        }
+        if (position.x < position.y / RING_SLOPE + RING_MIN_X) {
+            position.x = position.y / RING_SLOPE + RING_MIN_X;
+        } else if (position.x > position.y / -RING_SLOPE + RING_MAX_X) {
+            position.x = position.y / -RING_SLOPE + RING_MAX_X;
         }
     }
 
