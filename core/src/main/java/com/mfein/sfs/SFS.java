@@ -3,6 +3,7 @@ package com.mfein.sfs;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mfein.sfs.objects.Fighter;
 import com.mfein.sfs.resources.Assets;
@@ -10,7 +11,12 @@ import com.mfein.sfs.screens.GameScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class SFS extends Game {
+
+
     public SpriteBatch batch;
+
+    public ShapeRenderer shapeRenderer;
+
     public Assets assets;
 
     // screens
@@ -23,6 +29,8 @@ public class SFS extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
+
         assets = new Assets();
 
 
@@ -47,6 +55,8 @@ public class SFS extends Game {
     @Override
     public void dispose() {
         batch.dispose();
+        shapeRenderer.dispose();
         assets.dispose();
+
     }
 }
