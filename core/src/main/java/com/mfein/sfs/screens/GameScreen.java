@@ -102,6 +102,7 @@ public class GameScreen implements Screen, InputProcessor {
         // get the ring textures from the asset manager
         backgroundTexture = game.assets.manager.get(Assets.BACKGROUND_TEXTURE);
         frontRopesTexture = game.assets.manager.get(Assets.FRONT_ROPES_TEXTURE);
+
     }
 
     private void setUpFonts() {
