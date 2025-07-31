@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -435,28 +436,44 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (roundState == RoundState.IN_PROGRESS) {
-            // check if player has pressed a movement key
-            if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
-                game.player.moveLeft();
-            } else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
-                game.player.moveRight();
+        if (keycode == Input.Keys.SPACE) {
+            if (gameState == GameState.RUNNING) {
+                // if the game is running and the space key has been pressed, skip any round delays
+                if (roundState == RoundState.STARTING) {
+                    roundStateTime = START_ROUND_DELAY;
+                } else if (roundState == RoundState.ENDING) {
+                    roundStateTime = END_ROUND_DELAY;
+                }
+            } else if (gameState == GameState.GAME_OVER) {
+                // if the game is over and the space key has been pressed, restart the game
+                startGame();
             }
-            if (keycode == Input.Keys.UP || keycode == Input.Keys.W) {
-                game.player.moveUp();
-            } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S) {
-                game.player.moveDown();
+        } else {
+            if (roundState == RoundState.IN_PROGRESS) {
+                // check if player has pressed a movement key
+                if (keycode == Input.Keys.LEFT || keycode == Input.Keys.A) {
+                    game.player.moveLeft();
+                } else if (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D) {
+                    game.player.moveRight();
+                }
+                if (keycode == Input.Keys.UP || keycode == Input.Keys.W) {
+                    game.player.moveUp();
+                } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S) {
+                    game.player.moveDown();
+                }
+            }
+
+            // check if the player has pressed a block or attack key
+            if (keycode == Input.Keys.B) {
+                game.player.block();
+            } else if (keycode == Input.Keys.F) {
+                game.player.punch();
+            } else if (keycode == Input.Keys.V) {
+                game.player.kick();
             }
         }
 
-        // check if the player has pressed a block or attack key
-        if (keycode == Input.Keys.B) {
-            game.player.block();
-        } else if (keycode == Input.Keys.F) {
-            game.player.punch();
-        } else if (keycode == Input.Keys.V) {
-            game.player.kick();
-        }
+
         return true;
     }
 
@@ -489,7 +506,22 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        // convert the screen coordinates of the touch/click into world coordinates
+        Vector3 position = new Vector3(screenX, screenY, 0);
+        viewport.getCamera().unproject(position, viewport.getScreenX(), viewport.getScreenY(), viewport.getScreenWidth(),
+            viewport.getScreenHeight());
+
+        if (gameState == GameState.RUNNING) {
+            if (roundState == RoundState.STARTING) {
+                // if the round is starting and the screen has been touched, skip the start round delay
+                roundStateTime = START_ROUND_DELAY;
+            } else if (roundState == RoundState.ENDING) {
+                // if the round is ending and the screen has been touched, skip the end round delay
+                roundStateTime = END_ROUND_DELAY;
+            }
+        }
+
+        return true;
     }
 
     @Override
