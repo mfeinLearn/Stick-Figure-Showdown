@@ -19,7 +19,7 @@ public class Fighter {
     public static final float MOVEMENT_SPEED = 10f;
 
     // maximum life a fighter can have
-    public  static final float MAX_LIFE = 5f; //100f;
+    public  static final float MAX_LIFE = 100f;
 
     // amount of damage a fighter's hit will inflict
     public static final float HIT_STRENGTH = 5f;
