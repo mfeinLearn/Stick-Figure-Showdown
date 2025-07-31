@@ -50,6 +50,9 @@ public class GameScreen implements Screen, InputProcessor {
     private static final float MAX_ROUND_TIME = 99.99f;
     private float roundTimer = MAX_ROUND_TIME;
 
+    private static final float CRITICAL_ROUND_TIME = 10f;
+    private static final Color CRITICAL_ROUND_TIME_COLOR = Color.RED;
+
     // fonts
     private BitmapFont smallFont, mediumFont, largeFont;
     private static final Color DEFAULT_FONT_COLOR = Color.WHITE;
@@ -293,8 +296,12 @@ public class GameScreen implements Screen, InputProcessor {
             healthBarPadding, fighterNamePositionY, 0, Align.right, false);
 
         // draw the round timer
-        mediumFont.draw(game.batch, String.format(Locale.getDefault(), "%02d", (int) roundTimer ), viewport.getWorldWidth() / 2f,
-            viewport.getWorldHeight() - HUDMargin, 0, Align.center, false);
+        if (roundTimer < CRITICAL_ROUND_TIME) {
+            mediumFont.setColor(CRITICAL_ROUND_TIME_COLOR);
+        }
+        mediumFont.draw(game.batch, String.format(Locale.getDefault(), "%02d", (int) roundTimer ), viewport.getWorldWidth() / 2f -
+                mediumFont.getSpaceXadvance() * 2.3f, viewport.getWorldHeight() - HUDMargin );
+        mediumFont.setColor(DEFAULT_FONT_COLOR);
     }
 
     private void renderStartRoundText() {
