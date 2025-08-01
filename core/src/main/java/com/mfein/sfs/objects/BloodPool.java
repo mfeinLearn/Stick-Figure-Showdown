@@ -49,6 +49,13 @@ public class BloodPool {
         position.set(positionX, positionY);
     }
 
+    // note (do only if you want): To deactivate the blood pool after completing a match,
+    // (after finishing a match and going to the main menu screen and and clicking "PLAY
+    // GAME" ) you would need to fill in the method below
+    public void deactivate() {}
+
+
+
     public void update(float deltaTime) {
         // if not active, don't update
         if (!active) return;

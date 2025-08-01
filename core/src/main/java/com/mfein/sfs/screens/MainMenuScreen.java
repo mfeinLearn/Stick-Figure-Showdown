@@ -1,14 +1,17 @@
 package com.mfein.sfs.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -120,6 +123,63 @@ public class MainMenuScreen implements Screen {
         nextFighterButton = new Button(triangleButtonStyle);
         nextFighterButton.setSize(nextFighterButton.getWidth() * GlobalVariables.WORLD_SCALE,
             nextFighterButton.getHeight() * GlobalVariables.WORLD_SCALE);
+
+        // add the button listeners
+        addButtonListeners();
+    }
+
+    private void addButtonListeners() {
+        // add the play game button listener
+        playGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // play click sound
+                game.audioManager.playSound(Assets.CLICK_SOUND);
+
+                // switch to the game screen
+                game.setScreen(game.gameScreen);
+            }
+        });
+
+        // add the settings button listener
+        settingsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // play click sound
+                game.audioManager.playSound(Assets.CLICK_SOUND);
+            }
+        });
+
+        // add the quit game button listener
+        quitGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // play click sound
+                game.audioManager.playSound(Assets.CLICK_SOUND);
+
+                // close out the game
+                Gdx.app.exit();
+            }
+        });
+
+        // add the previous fighter button listener
+        previousFighterButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // play click sound
+                game.audioManager.playSound(Assets.CLICK_SOUND);
+            }
+        });
+
+        // add the next fighter button listener
+        nextFighterButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // play click sound
+                game.audioManager.playSound(Assets.CLICK_SOUND);
+            }
+        });
+
     }
 
     private void createLabels() {
@@ -206,6 +266,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        // set the stage as the input processor
+        Gdx.input.setInputProcessor(stage);
         // set the fighter display name label's text to the name of player's fighter
         fighterDisplayNameLabel.setText(game.player.getName().toUpperCase());
 
@@ -231,12 +293,14 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void pause() {
-
+        // pause music
+        game.audioManager.pauseMusic();
     }
 
     @Override
     public void resume() {
-
+        // resume music (if it's enabled)
+        game.audioManager.playMusic();
     }
 
     @Override
