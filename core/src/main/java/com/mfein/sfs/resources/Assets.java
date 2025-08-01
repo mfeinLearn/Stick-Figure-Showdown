@@ -54,6 +54,7 @@ public class Assets {
         loadGamePlayAssets();
         loadFonts();
         loadAudio();
+        loadMenuAssets();
     }
 
     private void loadGamePlayAssets() {
@@ -116,6 +117,11 @@ public class Assets {
         manager.load(CHEER_SOUND, Sound.class);
         manager.load(HIT_SOUND, Sound.class);
         manager.load(MUSIC, Music.class);
+    }
+
+    private void loadMenuAssets() {
+        // load the menu items texture atlas
+        manager.load(MENU_ITEMS_ATLAS, TextureAtlas.class);
     }
 
     public void dispose() {
