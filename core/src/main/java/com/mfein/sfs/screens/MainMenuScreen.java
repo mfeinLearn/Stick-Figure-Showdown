@@ -242,7 +242,6 @@ public class MainMenuScreen implements Screen {
     }
 
     private void createTables() {
-//        stage.setDebugAll(true); // for testing debug line boxes around different game objects
         // create the main table and add it to the stage
         Table mainTable = new Table();
         mainTable.setFillParent(true);
