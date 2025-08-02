@@ -162,11 +162,11 @@ public class SettingsScreen implements Screen {
             bloodCheckButton.getHeight() * GlobalVariables.WORLD_SCALE);
 
 
-
-
     }
 
     private void createTables() {
+
+        stage.setDebugAll(true);
 
     }
 
