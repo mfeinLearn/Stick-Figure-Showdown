@@ -13,6 +13,7 @@ import com.mfein.sfs.objects.Fighter;
 import com.mfein.sfs.objects.FighterChoice;
 import com.mfein.sfs.resources.Assets;
 import com.mfein.sfs.resources.AudioManager;
+import com.mfein.sfs.resources.SettingsManager;
 import com.mfein.sfs.screens.GameScreen;
 import com.mfein.sfs.screens.MainMenuScreen;
 
@@ -29,6 +30,8 @@ public class SFS extends Game {
 
     public Assets assets;
     public AudioManager audioManager;
+
+    public SettingsManager settingsManager;
 
     // screens
     public GameScreen gameScreen;
@@ -52,9 +55,30 @@ public class SFS extends Game {
         assets.load();
         assets.manager.finishLoading();
 
+        // initialize the settings manager and load all the settings
+        settingsManager = new SettingsManager();
+        settingsManager.loadSettings();
+
+
         // initialize the audio manager
         audioManager = new AudioManager(assets.manager);
-        audioManager.playMusic();
+
+        // update the audio settings in the audio manager
+        if (settingsManager.isMusicSettingOn()) {
+            audioManager.enableMusic();
+        } else {
+            audioManager.disableMusic();
+        }
+        if (settingsManager.isSoundsSettingOn()) {
+            audioManager.enableSounds();
+        } else {
+            audioManager.disableSounds();
+        }
+
+        // if the full screen setting is on, go to full screen
+        if (settingsManager.isFullScreenSettingOn()) {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        }
 
         // load the fighter choice list
         loadFighterChoiceList();
