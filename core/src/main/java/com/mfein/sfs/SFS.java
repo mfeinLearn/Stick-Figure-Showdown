@@ -16,6 +16,7 @@ import com.mfein.sfs.resources.AudioManager;
 import com.mfein.sfs.resources.SettingsManager;
 import com.mfein.sfs.screens.GameScreen;
 import com.mfein.sfs.screens.MainMenuScreen;
+import com.mfein.sfs.screens.SettingsScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class SFS extends Game {
     // screens
     public GameScreen gameScreen;
     public MainMenuScreen mainMenuScreen;
+    public SettingsScreen settingsScreen;
 
 
     // fighters
@@ -89,6 +91,9 @@ public class SFS extends Game {
 
         // initialize the game screen
         gameScreen = new GameScreen(this);
+
+        // initialize the settings screen
+        settingsScreen = new SettingsScreen(this);
 
         // initialize the main menu screen and switch to it
         mainMenuScreen = new MainMenuScreen(this);

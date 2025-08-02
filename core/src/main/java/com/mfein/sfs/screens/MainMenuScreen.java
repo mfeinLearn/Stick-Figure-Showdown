@@ -160,6 +160,9 @@ public class MainMenuScreen implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 // play click sound
                 game.audioManager.playSound(Assets.CLICK_SOUND);
+
+                // switch to the settings screen
+                game.setScreen(game.settingsScreen);
             }
         });
 
