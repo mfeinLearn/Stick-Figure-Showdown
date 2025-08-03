@@ -15,6 +15,7 @@ import com.mfein.sfs.resources.Assets;
 import com.mfein.sfs.resources.AudioManager;
 import com.mfein.sfs.resources.SettingsManager;
 import com.mfein.sfs.screens.GameScreen;
+import com.mfein.sfs.screens.LoadingScreen;
 import com.mfein.sfs.screens.MainMenuScreen;
 import com.mfein.sfs.screens.SettingsScreen;
 
@@ -38,6 +39,8 @@ public class SFS extends Game {
     public GameScreen gameScreen;
     public MainMenuScreen mainMenuScreen;
     public SettingsScreen settingsScreen;
+    public LoadingScreen loadingScreen;
+
 
 
     // fighters
@@ -49,14 +52,15 @@ public class SFS extends Game {
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-
         assets = new Assets();
 
 
-        // load all assets
-        assets.load();
-        assets.manager.finishLoading();
+        // initialize the loading screen and switch to it
+        loadingScreen = new LoadingScreen(this);
+        setScreen(loadingScreen);
+    }
 
+    public void assetsLoaded() {
         // initialize the settings manager and load all the settings
         settingsManager = new SettingsManager();
         settingsManager.loadSettings();
@@ -98,7 +102,6 @@ public class SFS extends Game {
         // initialize the main menu screen and switch to it
         mainMenuScreen = new MainMenuScreen(this);
         setScreen(mainMenuScreen);
-
     }
 
     private void loadFighterChoiceList() {
